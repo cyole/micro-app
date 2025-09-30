@@ -1,4 +1,6 @@
-## 1、我需要用到微前端吗？ :id=1
+# 常见问题
+
+## 1、我需要用到微前端吗？ {#1}
 在此之前建议你先阅读[Why Not Iframe](https://www.yuque.com/kuitos/gky7yw/gesexv)。
 
 相比于iframe，微前端拥有更好的用户体验，同时它也要求开发者对于前端框架和路由原理具有一定的理解。
@@ -9,12 +11,12 @@
 
 如果你不知道自己是否需要用微前端，那么大概率是不需要。
 
-## 2、子应用一定要支持跨域吗？ :id=2
+## 2、子应用一定要支持跨域吗？ {#2}
 是的！
 
 micro-app从主应用通过fetch加载子应用的静态资源，由于主应用与子应用的域名不一定相同，所以子应用必须支持跨域。
 
-## 3、兼容性如何 :id=3
+## 3、兼容性如何 {#3}
 micro-app依赖于CustomElements和Proxy两个较新的API。
 
 对于不支持CustomElements的浏览器，可以通过引入polyfill进行兼容，详情可参考：[webcomponents/polyfills](https://github.com/webcomponents/polyfills/tree/master/packages/custom-elements)。
@@ -28,30 +30,30 @@ micro-app依赖于CustomElements和Proxy两个较新的API。
 - 移动端：ios10+、android5+
 
 
-## 4、micro-app 报错 an app named xx already exists :id=4
+## 4、micro-app 报错 an app named xx already exists {#4}
 这是`name`名称冲突导致的，请确保每个子应用的`name`值是唯一的。
 
-## 5、主应用的样式影响到子应用 :id=5
+## 5、主应用的样式影响到子应用 {#5}
 虽然我们将子应用的样式进行隔离，但主应用的样式依然会影响到子应用，如果发生冲突，推荐通过约定前缀或CSS Modules方式解决。
 
 如果你使用的是`ant-design`等组件库，一般会提供添加前缀进行样式隔离的功能。
 
-## 6、子应用如何获取到真实window、document :id=6
+## 6、子应用如何获取到真实window、document {#6}
 子应用通过：`window.rawWindow`、`window.rawDocument` 可以获取真实的window、document
 
-## 7、子应用抛出错误信息：xxx 未定义 :id=7
-参考[JS沙箱常见问题-1](/zh-cn/sandbox?id=undefined)
+## 7、子应用抛出错误信息：xxx 未定义 {#7}
+参考[JS沙箱常见问题-1](/zh-cn/features/sandbox#undefined)
 
-## 8、jsonp请求如何处理？ :id=8
-参考[ignore](/zh-cn/configure?id=ignore忽略元素)
+## 8、jsonp请求如何处理？ {#8}
+参考[ignore](/zh-cn/features/configure#ignore)
 
 
-## 9、子应用通过a标签下载文件失败 :id=9
-  **原因：**当跨域时(主应用和文件在不同域名下)，无法通过a标签的download属性实现下载。
+## 9、子应用通过a标签下载文件失败 {#9}
+  **原因：** 当跨域时(主应用和文件在不同域名下)，无法通过a标签的download属性实现下载。
 
   **解决方式：**
 
-  **方式1：**转换为blob形式下载
+  **方式1：** 转换为blob形式下载
   ```html
   <a href='xxx.png' download="filename.png" @click='downloadFile'>下载</a>
   ```
@@ -77,9 +79,9 @@ micro-app依赖于CustomElements和Proxy两个较新的API。
   }
   ```
 
-  **方式2：**将文件放到主应用域名下，判断微前端环境下a标签href属性设置为主应用的文件地址
+  **方式2：** 将文件放到主应用域名下，判断微前端环境下a标签href属性设置为主应用的文件地址
 
-## 10、iconfont 图标冲突了如何处理？ :id=10
+## 10、iconfont 图标冲突了如何处理？ {#10}
 
 | 产生原因                                        | 解决方案                                                     |
 | ----------------------------------------------- | ------------------------------------------------------------ |
@@ -90,15 +92,15 @@ micro-app依赖于CustomElements和Proxy两个较新的API。
 
 ```css
 @font-face {
--  font-family: "iconfont";
-+  font-family: "iconfont1";
+   font-family: "iconfont"; /* [!code --] */
+   font-family: "iconfont1"; /* [!code ++] */
    src: url('iconfont.woff2?t=1704871404008') format('woff2'),
        url('iconfont.woff?t=1704871404008') format('woff'),
        url('iconfont.ttf?t=1704871404008') format('truetype');
 }
 
--.iconfont {
-+.iconfont1 {
+.iconfont { /* [!code --] */
+.iconfont1 { /* [!code ++] */
   font-family: "iconfont" !important;
   font-size: 16px;
   font-style: normal;
@@ -112,51 +114,48 @@ micro-app依赖于CustomElements和Proxy两个较新的API。
 ```
 
 ```html
-- <i className="iconfont right"></i>
-+ <i className="iconfont1 right"></i>
+<i className="iconfont right"></i> <!-- [!code --] -->
+<i className="iconfont1 right"></i> <!-- [!code ++] -->
 ```
 
-## 11、子应用script元素被注释、消失 :id=11
+## 11、子应用script元素被注释、消失 {#11}
 默认情况下，子应用的js会被提取并在后台运行，script元素原位置会留下注释：`<!--script with src='xxx' extract by micro-app-->`
 
-如果想要保留script元素，可以开启inline模式，配置方式参考：[inline](/zh-cn/configure?id=inline)
+如果想要保留script元素，可以开启inline模式，配置方式参考：[inline](/zh-cn/features/configure#inline)
 
-## 12、Vue主应用接入微前端时循环刷新（页面闪烁） :id=12
-参考[Vue常见问题-2](/zh-cn/framework/vue?id=question-2)
+## 12、Vue主应用接入微前端时循环刷新（页面闪烁） {#12}
+参考[Vue常见问题-2](/zh-cn/framework/vue#question-2)
 
-## 13、子应用使用`Module Federation`模块联邦时报错 :id=13
-参考[JS沙箱常见问题-2](/zh-cn/sandbox?id=module-federation)
+## 13、子应用使用`Module Federation`模块联邦时报错 {#13}
+参考[JS沙箱常见问题-2](/zh-cn/features/sandbox#module-federation)
 
-## 14、子应用`DllPlugin`拆分的文件加载失败 :id=14
-参考[JS沙箱常见问题-3](/zh-cn/sandbox?id=dllplugin)
+## 14、子应用`DllPlugin`拆分的文件加载失败 {#14}
+参考[JS沙箱常见问题-3](/zh-cn/features/sandbox#DllPlugin)
 
-## 15、iframe沙箱加载了主应用的资源 :id=15
-参考[JS沙箱常见问题-4](/zh-cn/sandbox?id=iframe-source)
+## 15、iframe沙箱加载了主应用的资源 {#15}
+参考[JS沙箱常见问题-4](/zh-cn/features/sandbox#iframe-source)
 
-## 16、内存泄漏 :id=16
-参考[JS沙箱常见问题-5](/zh-cn/sandbox?id=memory)
+## 16、内存泄漏 {#16}
+参考[JS沙箱常见问题-5](/zh-cn/features/sandbox#memory)
 
-## 17、一个页面加载过多个微前端 :id=17
+## 17、一个页面加载过多个微前端 {#17}
 微前端在过多加载和深度嵌套时，要谨慎使用，尤其同个页面在不同版本微前端之间可能会有相互影响，使用者要酌情处理。
 
-## 18、子应用加载资源或请求接口时没有带上cookie :id=18
+## 18、子应用加载资源或请求接口时没有带上cookie {#18}
 
-<!-- tabs:start -->
-#### ** 场景1：加载子应用的静态资源时没有带上cookie **
+::: tabs
+== 场景1：加载子应用的静态资源时没有带上cookie
 
-**原因：**MicroApp加载子应用的html、js等静态资源时默认不带cookie
+**原因：** MicroApp加载子应用的html、js等静态资源时默认不带cookie
 
-**解决方式：**通过自定义MicroApp的fetch方法，修改fetch的credentials配置，具体步骤参考[自定义fetch](/zh-cn/advanced?id=custom-fetch)
+**解决方式：** 通过自定义MicroApp的fetch方法，修改fetch的credentials配置，具体步骤参考[自定义fetch](/zh-cn/advanced?id=custom-fetch)
 
 > [!NOTE]
 > 需要注意的是，由于带了cookie，那么子应用的跨域配置`Access-Control-Allow-Origin`不能设置为`*`，必须指定域名，同时设置`Access-Control-Allow-Credentials: true`
 
+== 场景2：子应用请求接口时没有带上cookie
 
+**原因：** 常见于子应用域名与接口域名相同，而与主应用域名不同的场景，主应用域名与cookie Domain不匹配，导致无法携带cookie
 
-#### ** 场景2：子应用请求接口时没有带上cookie **
-
-**原因：**常见于子应用域名与接口域名相同，而与主应用域名不同的场景，主应用域名与cookie Domain不匹配，导致无法携带cookie
-
-**解决方式：**让后端在写入cookie时设置SameSite为None
-
-<!-- tabs:end -->
+**解决方式：** 让后端在写入cookie时设置SameSite为None
+:::

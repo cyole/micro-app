@@ -1,3 +1,5 @@
+# 多层嵌套
+
 `micro-app`支持多层嵌套，即子应用可以嵌入其它子应用，但需要做一些修改。
 
 例如：A嵌套B，B嵌套C，B作为中间层应用需要做出如下修改：
@@ -22,7 +24,7 @@ microApp.start({
 
 #### 步骤2：
 
-将B应用切换为umd模式，详情参考[umd](/zh-cn/umd)。
+将B应用切换为umd模式，详情参考[umd](/zh-cn/features/umd)。
 
 
 > [!NOTE]

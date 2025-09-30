@@ -1,3 +1,5 @@
+# 数据通信
+
 `micro-app`提供了一套灵活的数据通信机制，方便主应用和子应用之间的数据传输。
 
 主应用和子应用之间的通信是绑定的，主应用只能向指定的子应用发送数据，子应用只能向主应用发送数据，这种方式可以有效的避免数据污染，防止多个子应用之间相互影响。
@@ -147,9 +149,8 @@ window.microApp.forceDispatch({name: 'jack'}, () => {
 
 #### 方式1: 通过data属性发送数据
 
-<!-- tabs:start -->
-
-#### ** React **
+::: tabs
+== React
 在React中我们需要引入一个polyfill。
 
 在`<micro-app>`元素所在的文件顶部添加polyfill`(注释也要复制)`。
@@ -167,8 +168,7 @@ import jsxCustomEvent from '@micro-zoe/micro-app/polyfill/jsx-custom-event'
   data={this.state.dataForChild} // data只接受对象类型，采用严格对比(===)，当传入新的data对象时会重新发送
 />
 ```
-
-#### ** Vue **
+== Vue
 vue中和绑定普通属性方式一致。
 ```js
 <template>
@@ -189,7 +189,7 @@ export default {
 }
 </script>
 ```
-<!-- tabs:end -->
+:::
 
 #### 方式2: 手动发送数据
 
@@ -292,9 +292,8 @@ const childData = microApp.getData(appName) // 返回子应用的data数据
 
 #### 方式2: 监听自定义事件 (datachange)
 
-<!-- tabs:start -->
-
-#### ** React **
+::: tabs
+== React
 在React中我们需要引入一个polyfill。
 
 在`<micro-app>`元素所在的文件顶部添加polyfill`(注释也要复制)`。
@@ -305,7 +304,7 @@ import jsxCustomEvent from '@micro-zoe/micro-app/polyfill/jsx-custom-event'
 ```
 
 **开始使用**
-```js
+```jsx
 <micro-app
   name='my-app'
   url='xx'
@@ -313,10 +312,9 @@ import jsxCustomEvent from '@micro-zoe/micro-app/polyfill/jsx-custom-event'
   onDataChange={(e) => console.log('来自子应用的数据：', e.detail.data)}
 />
 ```
-
-#### ** Vue **
+== Vue
 vue中监听方式和普通事件一致。
-```js
+```html
 <template>
   <micro-app
     name='my-app'
@@ -336,7 +334,7 @@ export default {
 }
 </script>
 ```
-<!-- tabs:end -->
+:::
 
 注意：`datachange`绑定函数的返回值不会作为子应用dispatch回调函数的入参，它的返回值没有任何作用。
 
@@ -383,15 +381,14 @@ microApp.clearDataListener('my-app')
 ## 五、清空数据
 由于通信的数据会被缓存，即便子应用被卸载也不会清空，这可能会导致一些困扰，此时可以主动清空缓存数据来解决。
 
-<!-- tabs:start -->
-#### ** 主应用 **
-
+::: tabs
+== 主应用
 #### 方式一：配置项 - clear-data
 - 使用方式: `<micro-app clear-data></micro-app>`
 
 当设置了`clear-data`，子应用卸载时会同时清空主应用发送给当前子应用，和当前子应用发送给主应用的数据。
 
-[destroy](/zh-cn/configure?id=destroy)也有同样的效果。
+[destroy](/zh-cn/features/configure#destroy)也有同样的效果。
 
 #### 方式二：手动清空 - clearData
 ```js
@@ -400,38 +397,34 @@ import microApp from '@micro-zoe/micro-app'
 // 清空主应用发送给子应用 my-app 的数据
 microApp.clearData('my-app')
 ```
-
-#### ** 子应用 **
-
+== 子应用
 #### 方式一：手动清空 - clearData
 ```js
 // 清空当前子应用发送给主应用的数据
 window.microApp.clearData()
 ```
-<!-- tabs:end -->
+:::
 
 ## 全局数据通信
 全局数据通信会向主应用和所有子应用发送数据，在跨应用通信的场景中适用。
 
 #### 发送全局数据
 
-<!-- tabs:start -->
-#### ** 主应用 **
+::: tabs
+== 主应用
 ```js
 import microApp from '@micro-zoe/micro-app'
 
 // setGlobalData只接受对象作为参数
 microApp.setGlobalData({type: '全局数据'})
 ```
-
-#### ** 子应用 **
+== 子应用
 
 ```js
 // setGlobalData只接受对象作为参数
 window.microApp.setGlobalData({type: '全局数据'})
 ```
-<!-- tabs:end -->
-
+:::
 
 setGlobalData只接受对象作为参数，它发送的数据都会被缓存下来。
 
@@ -439,8 +432,8 @@ micro-app会遍历新旧值中的每个key判断值是否有变化，如果所�
 
 例如：
 
-<!-- tabs:start -->
-#### ** 主应用 **
+::: tabs
+== 主应用
 ```js
 // 第一次发送数据，记入缓存值 {name: 'jack'}，然后发送 
 microApp.setGlobalData({name: 'jack'})
@@ -455,9 +448,7 @@ microApp.setGlobalData({age: 20})
 // 第三次发送数据，新旧值合并为 {name: 'jack', age: 20}，与缓存值相同，不再发送
 microApp.setGlobalData({age: 20})
 ```
-
-#### ** 子应用 **
-
+== 子应用
 ```js
 // 第一次发送数据，记入缓存值 {name: 'jack'}，然后发送 
 window.microApp.setGlobalData({name: 'jack'})
@@ -472,57 +463,59 @@ window.microApp.setGlobalData({age: 20})
 // 第三次发送数据，新旧值合并为 {name: 'jack', age: 20}，与缓存值相同，不再发送
 window.microApp.setGlobalData({age: 20})
 ```
-<!-- tabs:end -->
-
+:::
 
 ##### setGlobalData是异步执行的，多个setGlobalData会在下一帧合并为一次执行
 
 例如：
-<!-- tabs:start -->
-#### ** 主应用 **
+
+::: tabs
+== 主应用
 ```js
 microApp.setGlobalData({name: 'jack'})
 microApp.setGlobalData({age: 20})
 
 // 上面的数据会在下一帧合并为对象{name: 'jack', age: 20}一次性发送给主应用
 ```
-
-#### ** 子应用 **
-
+== 子应用
 ```js
 window.microApp.setGlobalData({name: 'jack'})
 window.microApp.setGlobalData({age: 20})
 
 // 上面的数据会在下一帧合并为对象{name: 'jack', age: 20}一次性发送给主应用
 ```
-<!-- tabs:end -->
+:::
 
 
 ##### setGlobalData第二个参数为回调函数，它会在数据发送结束后执行
 
 例如：
-<!-- tabs:start -->
-#### ** 主应用 **
+
+::: tabs
+== 主应用
 ```js
 microApp.setGlobalData({city: 'HK'}, () => {
   console.log('数据已经发送完成')
 })
 ```
 
-#### ** 子应用 **
+== 子应用
 
 ```js
 window.microApp.setGlobalData({city: 'HK'}, () => {
   console.log('数据已经发送完成')
 })
 ```
-<!-- tabs:end -->
+:::
+
 
 ##### 当全局数据的监听函数有返回值时，会作为setGlobalData回调函数的入参
 
 例如：
-<!-- tabs:start -->
-#### ** 主应用 **
+
+::: tabs
+== 主应用
+
 ```js
 microApp.addGlobalDataListener((data) => {
   console.log('全局数据', data)
@@ -544,7 +537,7 @@ microApp.setGlobalData({city: 'HK'}, (res: any[]) => {
 })
 ```
 
-#### ** 子应用 **
+== 子应用
 ```js
 window.microApp.addGlobalDataListener((data) => {
   console.log('全局数据', data)
@@ -565,16 +558,16 @@ window.microApp.setGlobalData({city: 'HK'}, (res: any[]) => {
   console.log(res) // ['返回值1', '返回值2']
 })
 ```
-<!-- tabs:end -->
-
+:::
 
 ##### forceSetGlobalData：强制发送
 
 forceSetGlobalData方法拥有和setGlobalData一样的参数和行为，唯一不同的是forceSetGlobalData会强制发送数据，无论数据是否变化。
 
 例如：
-<!-- tabs:start -->
-#### ** 主应用 **
+
+::: tabs
+== 主应用
 ```js
 // 强制发送数据，无论缓存中是否已经存在 name: 'jack' 的值
 microApp.forceSetGlobalData({name: 'jack'}, () => {
@@ -582,23 +575,20 @@ microApp.forceSetGlobalData({name: 'jack'}, () => {
 })
 ```
 
-#### ** 子应用 **
-
+== 子应用
 ```js
 // 强制发送数据，无论缓存中是否已经存在 name: 'jack' 的值
 window.microApp.forceSetGlobalData({name: 'jack'}, () => {
   console.log('数据已经发送完成')
 })
 ```
-<!-- tabs:end -->
-
+:::
 
 
 #### 获取全局数据
 
-<!-- tabs:start -->
-
-#### ** 主应用 **
+::: tabs
+== 主应用
 ```js
 import microApp from '@micro-zoe/micro-app'
 
@@ -623,8 +613,7 @@ microApp.removeGlobalDataListener(dataListener: (data: Object) => any)
 microApp.clearGlobalDataListener()
 ```
 
-#### ** 子应用 **
-
+== 子应用
 ```js
 // 直接获取数据
 const globalData = window.microApp.getGlobalData() // 返回全局数据
@@ -646,11 +635,12 @@ window.microApp.removeGlobalDataListener(dataListener: (data: Object) => any)
 // 清空当前子应用绑定的所有全局数据监听函数
 window.microApp.clearGlobalDataListener()
 ```
-<!-- tabs:end -->
+:::
 
 #### 清空全局数据
-<!-- tabs:start -->
-#### ** 主应用 **
+
+::: tabs
+== 主应用
 ```js
 import microApp from '@micro-zoe/micro-app'
 
@@ -658,13 +648,12 @@ import microApp from '@micro-zoe/micro-app'
 microApp.clearGlobalData()
 ```
 
-#### ** 子应用 **
-
+== 子应用
 ```js
 // 清空全局数据
 window.microApp.clearGlobalData()
 ```
-<!-- tabs:end -->
+:::
 
 ## 关闭沙箱后的通信方式
 沙箱关闭后，子应用默认的通信功能失效，此时可以通过手动注册通信对象实现一致的功能。

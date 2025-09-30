@@ -22,3 +22,6 @@ logs
 # eslint
 .eslintcache
 .history
+
+docs/.vitepress/cache
+docs/.vitepress/dist

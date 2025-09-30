@@ -1,4 +1,7 @@
 
+
+# 跨应用跳转
+
 每个应用的路由实例都是不同的，应用的路由实例只能控制自身，无法影响其它应用，包括主应用无法通过控制自身路由影响到子应用。
 
 > 常见的问题如：开发者想通过主应用的侧边栏跳转，从而控制子应用的页面，这其实是做不到的，只有子应用的路由实例可以控制自身的页面。
@@ -60,10 +63,9 @@ microApp.setData('子应用name', { path: '/new-path/' })
 *适用场景: 子应用控制主应用跳转*
 
 **主应用下发pushState函数：**
-<!-- tabs:start -->
 
-#### ** React **
-```js
+::: code-group
+```js [React]
 import { useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 import microApp, { removeDomScope } from '@micro-zoe/micro-app'
@@ -89,9 +91,7 @@ export default () => {
 }
 ```
 
-#### ** Vue **
-
-```html
+```html [Vue]
 <template>
   <micro-app
     name='子应用名称' 
@@ -117,7 +117,8 @@ export default {
 }
 </script>
 ```
-<!-- tabs:end -->
+
+:::
 
 **子应用使用pushState控制主应用跳转：**
 

@@ -1,3 +1,5 @@
+# 生命周期
+
 `micro-app`通过`CustomEvent`定义生命周期，在组件渲染过程中会触发相应的生命周期事件。
 
 ## 生命周期列表
@@ -19,12 +21,13 @@
 
 
 ## 监听生命周期
-<!-- tabs:start -->
 
-#### ** React **
+::: tabs
+== React
 因为React不支持自定义事件，所以我们需要引入一个polyfill。
 
 `在<micro-app>标签所在的文件顶部`添加polyfill，注释也要复制。
+
 ```js
 /** @jsxRuntime classic */
 /** @jsx jsxCustomEvent */
@@ -32,7 +35,7 @@ import jsxCustomEvent from '@micro-zoe/micro-app/polyfill/jsx-custom-event'
 ```
 
 **开始使用**
-```js
+```jsx
 <micro-app
   name='xx'
   url='xx'
@@ -44,8 +47,9 @@ import jsxCustomEvent from '@micro-zoe/micro-app/polyfill/jsx-custom-event'
 />
 ```
 
-#### ** Vue **
+== Vue
 vue中监听方式和普通事件一致。
+
 ```html
 <template>
   <micro-app
@@ -81,7 +85,7 @@ export default {
 }
 </script>
 ```
-#### ** 自定义 **
+== 自定义
 我们可以手动监听生命周期事件。
 
 ```js
@@ -107,11 +111,12 @@ myApp.addEventListener('error', () => {
   console.log('error')
 })
 ```
-
-<!-- tabs:end -->
+:::
 
 ## 全局监听
+
 全局监听会在每个应用的生命周期执行时都会触发。
+
 ```js
 import microApp from '@micro-zoe/micro-app'
 
@@ -139,7 +144,7 @@ microApp.start({
 ## 全局事件
 在子应用的加载过程中，micro-app会向子应用发送一系列事件，包括渲染、卸载等事件。
 
-#### 渲染事件
+### 渲染事件
 通过向window注册onmount函数，可以监听子应用的渲染事件。
 
 ```js
@@ -152,7 +157,7 @@ window.onmount = (data) => {
 }
 ```
 
-#### 卸载事件
+### 卸载事件
 通过向window注册onunmount函数，可以监听子应用的卸载事件。
 
 ```js

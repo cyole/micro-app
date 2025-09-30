@@ -1,3 +1,5 @@
+# keep-alive
+
 在应用之间切换时，我们有时会想保留这些应用的状态，以便恢复用户的操作行为和提升重复渲染的性能，此时开启keep-alive模式可以达到这样的效果。
 
 开启keep-alive后，应用卸载时不会销毁，而是推入后台运行。
@@ -35,11 +37,10 @@ keep-alive模式与普通模式最大的不同是生命周期，因为它不会�
 #### 7. aftershow
 子应用推入前台之后触发`(初始化时不执行)`。
 
-
 #### 监听生命周期
-<!-- tabs:start -->
 
-#### ** React **
+::: tabs
+== React
 因为React不支持自定义事件，所以我们需要引入一个polyfill。
 
 `在<micro-app>标签所在的文件顶部`添加polyfill，注释也要复制。
@@ -50,7 +51,7 @@ import jsxCustomEvent from '@micro-zoe/micro-app/polyfill/jsx-custom-event'
 ```
 
 **开始使用**
-```js
+```jsx
 <micro-app
   name='xx'
   url='xx'
@@ -63,8 +64,7 @@ import jsxCustomEvent from '@micro-zoe/micro-app/polyfill/jsx-custom-event'
   onError={() => console.log('渲染出错')}
 />
 ```
-
-#### ** Vue **
+== Vue
 vue中监听方式和普通事件一致。
 ```html
 <template>
@@ -109,7 +109,8 @@ export default {
 }
 </script>
 ```
-<!-- tabs:end -->
+
+:::
 
 ### 子应用
 keep-alive模式下，在子应用卸载、重新渲染时，micro-app都会向子应用发送名为`appstate-change`的自定义事件，子应用可以通过监听该事件获取当前状态，状态值可以通过事件对象属性`e.detail.appState`获取。

@@ -1,4 +1,6 @@
-## 1、自定义fetch :id=custom-fetch
+# 高级功能
+
+## 1、自定义fetch {#custom-fetch}
 通过自定义fetch替换框架自带的fetch，可以修改fetch配置(添加cookie或header信息等等)，或拦截HTML、JS、CSS等静态资源。
 
 自定义的fetch必须是一个返回string类型的Promise。

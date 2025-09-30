@@ -1,12 +1,12 @@
+# 部署
 
 ## 前言
 我们强烈建议你保持开发环境和线上环境路径(*即webpack的publicPath*)的一致性，以避免在部署后出现问题，无论是主应用还是子应用。
 
 比如一个应用，在部署时作为文件夹 `my-app` 放入服务器根目录，那么配置如下：
-<!-- tabs:start -->
-#### ** webpack **
+::: code-group
 
-```js
+```js [webpack]
 // webpack.config.js
 module.exports = {
   output: {
@@ -16,9 +16,7 @@ module.exports = {
   }
 }
 ```
-
-#### ** vue-cli **
-```js
+```js [vue-cli]
 // vue.config.js
 module.exports = {
   outputDir: 'my-app',
@@ -26,7 +24,7 @@ module.exports = {
   publicPath: '/my-app/', // good 👍
 }
 ```
-<!-- tabs:end -->
+:::
 
 ## 示例
 正常来说只要开发环境和线上环境资源路径一致，并在部署后设置好nginx的跨域即可，在开发环境正常运行的项目，部署到服务器后，理论上也可以正常运行。
@@ -89,7 +87,7 @@ root(服务器根目录)
 #### nginx配置如下：
 
 以下配置仅供参考，具体项目根据实际情况调整。
-```js
+```nginx
 # micro-zoe.com 相关配置
 server {
   listen       80;

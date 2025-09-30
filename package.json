@@ -37,7 +37,9 @@
     "start-child:vite2": "cd dev/children/vite2 && yarn start",
     "start-child:vite4": "cd dev/children/vite4 && yarn start",
     "start-child:angular11": "cd dev/children/angular11 && yarn start",
-    "docs": "docsify serve docs --port 2000",
+    "docs": "vitepress dev docs",
+    "docs:build": "vitepress build docs",
+    "docs:preview": "vitepress preview docs",
     "lint": "eslint --cache '**/*.{js,ts}'",
     "lint:fix": "yarn lint --fix",
     "createtype": "node scripts/create_type.js",
@@ -129,6 +131,10 @@
     "rollup": "~2.35.1",
     "rollup-plugin-terser": "~7.0.2",
     "ts-jest": "~26.5.6",
-    "typescript": "~4.1.3"
+    "typescript": "~4.1.3",
+    "vitepress": "^1.6.4",
+    "vitepress-plugin-group-icons": "^1.6.3",
+    "vitepress-plugin-lightbox": "^1.0.3",
+    "vitepress-plugin-tabs": "^0.7.3"
   }
 }

@@ -1,5 +1,7 @@
+# 子应用API
+
 ## pureCreateElement
-**描述：**创建无绑定的纯净元素，该元素可以逃离元素隔离的边界，不受子应用沙箱的控制
+**描述：** 创建无绑定的纯净元素，该元素可以逃离元素隔离的边界，不受子应用沙箱的控制
 
 **版本限制：** 0.8.2及以上版本
 
@@ -12,7 +14,7 @@ document.body.appendChild(pureDiv)
 
 
 ## removeDomScope
-**描述：**解除元素绑定，通常用于受子应用元素绑定影响，导致主应用元素错误绑定到子应用的情况
+**描述：** 解除元素绑定，通常用于受子应用元素绑定影响，导致主应用元素错误绑定到子应用的情况
 
 **版本限制：** 0.8.2及以上版本
 
@@ -37,7 +39,7 @@ window.microApp.removeDomScope(false) // 恢复元素绑定
 ```
 
 ## rawWindow
-**描述：**获取真实的window
+**描述：** 获取真实的window
 
 **使用方式：**
 ```js
@@ -45,7 +47,7 @@ window.rawWindow
 ```
 
 ## rawDocument
-**描述：**获取真实的document
+**描述：** 获取真实的document
 
 **使用方式：**
 ```js
@@ -54,7 +56,7 @@ window.rawDocument
 
 
 ## getData
-**描述：**获取主应用下发的data数据
+**描述：** 获取主应用下发的data数据
 
 **使用方式：**
 ```js
@@ -62,7 +64,7 @@ const data = window.microApp.getData() // 返回主应用下发的data数据
 ```
 
 ## addDataListener
-**描述：**绑定数据监听函数
+**描述：** 绑定数据监听函数
 
 **介绍：**
 ```js
@@ -87,7 +89,7 @@ window.microApp.addDataListener(dataListener)
 ```
 
 ## removeDataListener
-**描述：**解绑数据监听函数
+**描述：** 解绑数据监听函数
 
 **使用方式：**
 
@@ -100,7 +102,7 @@ window.microApp.removeDataListener(dataListener)
 ```
 
 ## clearDataListener
-**描述：**清空当前子应用的所有数据监听函数(全局数据函数除外)
+**描述：** 清空当前子应用的所有数据监听函数(全局数据函数除外)
 
 **使用方式：**
 
@@ -109,7 +111,7 @@ window.microApp.clearDataListener()
 ```
 
 ## dispatch
-**描述：**向主应用发送数据
+**描述：** 向主应用发送数据
 
 **使用方式：**
 
@@ -120,7 +122,7 @@ window.microApp.dispatch({type: '子应用发送的数据'})
 
 
 ## getGlobalData
-**描述：**获取全局数据
+**描述：** 获取全局数据
 
 **使用方式：**
 ```js
@@ -129,7 +131,7 @@ const globalData = window.microApp.getGlobalData() // 返回全局数据
 
 
 ## addGlobalDataListener
-**描述：**绑定数据监听函数
+**描述：** 绑定数据监听函数
 
 **介绍：**
 ```js
@@ -152,7 +154,7 @@ window.microApp.addGlobalDataListener(dataListener)
 ```
 
 ## removeGlobalDataListener
-**描述：**解绑全局数据监听函数
+**描述：** 解绑全局数据监听函数
 
 **使用方式：**
 
@@ -165,7 +167,7 @@ window.microApp.removeGlobalDataListener(dataListener)
 ```
 
 ## clearGlobalDataListener
-**描述：**清空当前子应用绑定的所有全局数据监听函数
+**描述：** 清空当前子应用绑定的所有全局数据监听函数
 
 **使用方式：**
 
@@ -174,7 +176,7 @@ window.microApp.clearGlobalDataListener()
 ```
 
 ## setGlobalData
-**描述：**发送全局数据
+**描述：** 发送全局数据
 
 **使用方式：**
 

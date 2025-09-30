@@ -1,12 +1,14 @@
+# 预加载
+
 预加载是指在子应用尚未渲染时提前加载静态资源，从而提升子应用的首次渲染速度。
 
 为了不影响主应用的性能，预加载会在浏览器空闲时间执行。
 
-### 语法
+## 语法
 ```js
 microApp.preFetch(apps: app[] | () => app[], delay?: number)
 ```
-### 参数
+## 参数
 **apps**
 
 第一个参数为一个数组或一个返回数组的函数，数组传入的配置如下：
@@ -43,8 +45,7 @@ microApp.start({
 })
 ```
 
-
-### 进阶
+## 进阶
 预加载JS资源分为三个步骤，对应上述参数 - `level`：
 - 1、加载静态资源
 - 2、将载静态资源解析成可执行代码
@@ -64,9 +65,9 @@ microApp.start({
 ```
 
 > [!TIP]
-> level或prefetchLevel为3时，预加载子应用的[虚拟路由系统](/zh-cn/router)无法关闭。
+> level或prefetchLevel为3时，预加载子应用的[虚拟路由系统](/zh-cn/features/router)无法关闭。
 
-### 使用方式
+## 使用方式
 ```js
 import microApp from '@micro-zoe/micro-app'
 
@@ -112,7 +113,7 @@ microApp.preFetch([
 ], 5000)
 ```
 
-### vite应用
+## vite应用
 当子应用是vite时，除了name和url外，还要设置第三个参数`iframe`为true，开启iframe沙箱。
 
 例如：
@@ -123,7 +124,7 @@ microApp.preFetch([
 ])
 ```
 
-### 补充
+## 补充
 正常情况下，预加载只需要设置name和url，其它参数不需要设置。
 
 但我们还是建议预加载的配置和`<micro-app>`元素上的配置保持一致。

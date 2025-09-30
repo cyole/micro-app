@@ -1,3 +1,9 @@
+---
+aside: false
+---
+
+# 更新日志
+
 `micro-app` 遵循 [Semantic Versioning 2.0.0](http://semver.org/lang/zh-CN/) 语义化版本规范。
 
 #### 发布周期
@@ -24,7 +30,7 @@
 
 `2025-05-23`
 - **Feature**
-  - 支持escapeIframeWindowEvents : iframe 模式 逃逸沙盒的window事件， Array<string>。
+  - 支持escapeIframeWindowEvents : iframe 模式 逃逸沙盒的window事件， Array\<string\>。
 - **Bug Fix**
   - 🐞 修复 子应用样式加载异常，[issue 1553](https://github.com/jd-opensource/micro-app/issues/1553)。
   - 🐞 修复 当开启样式隔离时子应用属性选择器样式错误，[issue 1573](https://github.com/jd-opensource/micro-app/issues/1573)。

@@ -1,6 +1,8 @@
+# Vue
+
 本篇以`Vue 2、3`作为案例介绍vue的接入方式。
 
-## 作为主应用 :id=main
+## 作为主应用 {#main}
 
 #### 1、安装依赖
 ```bash
@@ -32,15 +34,13 @@ microApp.start()
 > 2、url：必传参数，必须指向子应用的index.html，如：http://localhost:3000/ 或 http://localhost:3000/index.html
 
 
-## 作为子应用 :id=child
+## 作为子应用 {#child}
 
-#### 1、设置跨域支持 :id=Access-Control-Allow-Origin
+#### 1、设置跨域支持 {#Access-Control-Allow-Origin}
 
-<!-- tabs:start -->
+::: code-group
 
-#### ** vue.config.js **
-
-```js
+```js [vue.config.js]
 module.exports = {
   devServer: {
     headers: {
@@ -50,19 +50,18 @@ module.exports = {
 }
 ```
 
-#### ** vite.config.js **
+```txt [vite.config.js]
 vite默认开启跨域支持，不需要额外配置。
-<!-- tabs:end -->
+```
 
+:::
 
-#### 2、注册卸载函数 :id=unmount
+#### 2、注册卸载函数 {#unmount}
 子应用卸载时会自动执行`window.unmount`，在此可以进行卸载相关操作。
 
-<!-- tabs:start -->
+::: code-group
 
-#### ** Vue2 **
-
-```js
+```js [Vue2]
 // main.js
 const app = new Vue(...)
 
@@ -72,8 +71,7 @@ window.unmount = () => {
 }
 ```
 
-#### ** Vue3 **
-```js
+```js [Vue3]
 // main.js
 const app = createApp(App)
 app.mount('#app')
@@ -83,18 +81,18 @@ window.unmount = () => {
   app.unmount()
 }
 ```
-<!-- tabs:end -->
+:::
 
 完成以上步骤微前端即可正常渲染。
 
-### 可选设置 :id=options
+### 可选设置 {#options}
 以下配置是针对子应用的，它们是可选的，建议根据实际情况选择设置。
 
-#### 1、开启umd模式，优化内存和性能 :id=umd
-详情参考[umd模式](/zh-cn/umd)章节。
+#### 1、开启umd模式，优化内存和性能 {#umd}
+详情参考[umd模式](/zh-cn/features/umd)章节。
 
 
-#### 2、设置 webpack.jsonpFunction :id=webpackJsonpFunction
+#### 2、设置 webpack.jsonpFunction {#webpackJsonpFunction}
 如果微前端正常运行，则可以忽略这一步。
 
 如果子应用资源加载混乱导致渲染失败，可以尝试设置`jsonpFunction`来解决，因为相同的`jsonpFunction`名称会导致资源污染。
@@ -102,10 +100,9 @@ window.unmount = () => {
 这种情况常见于主应用和子应用都是通过`create-react-app`脚手架创建的react项目，vue项目中并不常见。
 
 **解决方式：修改子应用的webpack配置**
-<!-- tabs:start -->
+::: code-group
 
-#### ** vue.config.js **
-```js
+```js [vue.config.js]
 // vue.config.js
 module.exports = {
   configureWebpack: {
@@ -115,11 +112,9 @@ module.exports = {
     }
   },
 }
-
 ```
 
-#### ** webpack4 **
-```js
+```js [webpack4]
 // webpack.config.js
 module.exports = {
   output: {
@@ -130,8 +125,7 @@ module.exports = {
 }
 ```
 
-#### ** webpack5 **
-```js
+```js [webpack5]
 // webpack.config.js
 module.exports = {
   output: {
@@ -141,10 +135,9 @@ module.exports = {
   },
 }
 ```
-<!-- tabs:end -->
+:::
 
-
-#### 3、设置 publicPath :id=public-path
+#### 3、设置 publicPath {#public-path}
 如果子应用出现静态资源地址404(js、css、图片)，建议设置`publicPath`来尝试解决这个问题。
 
 `publicPath`是webpack提供的功能，vite应用是不支持的，它可以补全静态资源的地址，详情参考webpack文档 [publicPath](https://webpack.docschina.org/guides/public-path/#on-the-fly)
@@ -164,7 +157,7 @@ if (window.__MICRO_APP_ENVIRONMENT__) {
 import './public-path'
 ```
 
-#### 4、切换到iframe沙箱 :id=iframe
+#### 4、切换到iframe沙箱 {#iframe}
 MicroApp有两种沙箱方案：`with沙箱`和`iframe沙箱`。
 
 默认开启with沙箱，如果with沙箱无法正常运行，可以尝试切换到iframe沙箱。
@@ -175,7 +168,7 @@ MicroApp有两种沙箱方案：`with沙箱`和`iframe沙箱`。
 
 
 ## 常见问题
-#### 1、主应用中抛出警告，micro-app未定义 :id=question-1
+#### 1、主应用中抛出警告，micro-app未定义 {#question-1}
 
 **报错信息：**
   - vue2: `[Vue warn]: Unknown custom element: <micro-app>`
@@ -184,9 +177,9 @@ MicroApp有两种沙箱方案：`with沙箱`和`iframe沙箱`。
 **参考issue：**[vue-next@1414](https://github.com/vuejs/vue-next/issues/1414)
 
 **解决方式：** 在主应用中添加如下配置
-<!-- tabs:start -->
 
-#### ** Vue2 **
+::: tabs
+== Vue2
 在入口文件main.js中设置ignoredElements，详情查看：https://cn.vuejs.org/v2/api/#ignoredElements
 ```js
 // main.js
@@ -197,7 +190,7 @@ Vue.config.ignoredElements = [
 ]
 ```
 
-#### ** Vue3 **
+== Vue3
 在vue.config.js中添加chainWebpack配置，如下：
 ```js
 // vue.config.js
@@ -217,7 +210,7 @@ module.exports = {
 }
 ```
 
-#### ** Vite + Vue3 **
+== Vite + Vue3
 在vite.config.js中通过vue插件设置isCustomElement，如下：
 ```js
 import { defineConfig } from 'vite'
@@ -235,13 +228,13 @@ export default defineConfig({
   ],
 })
 ```
-<!-- tabs:end -->
+:::
 
-#### 2、Vue主应用加载子应用或跳转时子应用频繁卸载和渲染 :id=question-2
+#### 2、Vue主应用加载子应用或跳转时子应用频繁卸载和渲染 {#question-2}
 
-**原因：**如果将`route.fullPath`或`route.path`设置为key，那么当路由变化时Vue会重新渲染组件，导致`<micro-app>`元素被频繁卸载和渲染。
+**原因：** 如果将`route.fullPath`或`route.path`设置为key，那么当路由变化时Vue会重新渲染组件，导致`<micro-app>`元素被频繁卸载和渲染。
 
-**解决方式：**将主应用中`<router-view>`或包含`<micro-app>`元素的上层组件中`:key="route.fullPath"`或`:key="route.path"`改为`:key="route.name"`
+**解决方式：** 将主应用中`<router-view>`或包含`<micro-app>`元素的上层组件中`:key="route.fullPath"`或`:key="route.path"`改为`:key="route.name"`
 
 ```html
 <!-- bad 😭 -->
@@ -255,16 +248,19 @@ export default defineConfig({
 ```
 
 **例如：**
-```html
+
 将：
+```html
 <router-view v-slot="{ Component, route }">
   <transition name="fade">
     <!------------------------- 👇 -->
     <component :is="Component" :key="route.path" />
   </transition>
 </router-view>
+```
 
 修改为：
+```html
 <router-view v-slot="{ Component, route }">
   <transition name="fade">
     <!------------------------- 👇 -->

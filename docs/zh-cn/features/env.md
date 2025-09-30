@@ -1,4 +1,6 @@
-### `__MICRO_APP_ENVIRONMENT__`
+# 环境变量
+
+## `__MICRO_APP_ENVIRONMENT__`
 
 **描述：判断应用是否在微前端环境中**
 
@@ -10,13 +12,13 @@ if (window.__MICRO_APP_ENVIRONMENT__) {
 }
 ```
 
-### `__MICRO_APP_NAME__`
+## `__MICRO_APP_NAME__`
 
 **描述：应用名称**
 
 在子应用中通过 `window.__MICRO_APP_NAME__` 获取应用的name值，即`<micro-app>`标签的name值。
 
-### `__MICRO_APP_PUBLIC_PATH__`
+## `__MICRO_APP_PUBLIC_PATH__`
 
 **描述：子应用的静态资源前缀**
 
@@ -36,13 +38,13 @@ if (window.__MICRO_APP_ENVIRONMENT__) {
 import './public-path'
 ```
 
-### `__MICRO_APP_BASE_ROUTE__`
+## `__MICRO_APP_BASE_ROUTE__`
 
 **描述：子应用的基础路径**
 
-详情见[路由-基础路径](/zh-cn/native-mode?id=基础路径)一章。
+详情见[路由-基础路径](/zh-cn/native-mode#base)一章。
 
-### `__MICRO_APP_BASE_APPLICATION__`
+## `__MICRO_APP_BASE_APPLICATION__`
 
 **描述：判断当前应用是否是主应用**
 
@@ -55,7 +57,7 @@ if (window.__MICRO_APP_BASE_APPLICATION__) {
 ```
 
 
-### `rawWindow`
+## `rawWindow`
 
 **描述：获取真实window（即主应用window）**
 
@@ -66,7 +68,7 @@ if (window.__MICRO_APP_BASE_APPLICATION__) {
 window.rawWindow
 ```
 
-### `rawDocument`
+## `rawDocument`
 
 **描述：获取真实document（即主应用document）**
 

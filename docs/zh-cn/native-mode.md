@@ -1,10 +1,13 @@
+# Native 路由模式
+
 不同于其它路由模式通过search参数或history.state进行路由隔离，native模式是指放开路由隔离，主应用和子应用同时基于浏览器地址进行渲染，也都会直接修改浏览器地址。
 
 它拥有更好的用户体验，但也更容易导致主应用和子应用的路由冲突，所以需要更加复杂的路由配置，要对主应用和子应用路由进行一些改造。
 
-实际上主应用和子应用的路由即同时基于浏览器地址进行渲染，又相互独立，我们通过路由配置让两个独立的路由系统实现共存，具体原理参考[关于native模式的原理解析](/zh-cn/native-mode?id=principle)。
+实际上主应用和子应用的路由即同时基于浏览器地址进行渲染，又相互独立，我们通过路由配置让两个独立的路由系统实现共存，具体原理参考[关于native模式的原理解析](/zh-cn/native-mode#principle)。
 
-### 基础路径 :id=base
+## 基础路径 {#base}
+
 基础路径即vue-router的[base](https://router.vuejs.org/zh/api/interfaces/RouterHistory.html#Properties-base)、react-router的[basename](https://reactrouter.com/en/main/router-components/browser-router#basename)，通常与应用托管在服务器的文件夹地址一致，但在微前端下子应用基础路径的设置有所不同，需要根据主应用的地址动态设置。
 
 由于主应用和子应用各有一套路由系统，为了防止冲突，主应用需要分配一个基础路径给子应用，子应用在这个路径下渲染，且不能超出这个路径的范围，实现主应用和子应用的并行渲染。
@@ -16,17 +19,16 @@
   - 2、如果主应用是hash路由，子应用也必须是hash路由，否则无法正常渲染。
   - 3、如果主、子同时是history路由或同时是hash路由，则按照下面的方式设置基础路径。
 
-#### 设置基础路径： :id=baseroute
+### 设置基础路径： {#baseroute}
 
 主应用通过`baseroute`下发基础路径的值，子应用通过`window.__MICRO_APP_BASE_ROUTE__`获取此值并设置基础路径。
 
-#### 主应用 :id=main
+#### 主应用 {#main}
 
-<!-- tabs:start -->
+::: tabs key:baseroute
+== React 16
 
-#### ** react16 **
-
-**1、设置路由：**history路由和hash路由的配置方式一样，这里不做区分
+**1、设置路由：** history路由和hash路由的配置方式一样，这里不做区分
 
 限制：react-router版本为4.x或5.x
 ```js
@@ -61,9 +63,9 @@ export function MyPage () {
 }
 ```
 
-#### ** react18 **
+== React 18
 
-**1、设置路由：**history路由和hash路由的配置方式一样，这里不做区分
+**1、设置路由：** history路由和hash路由的配置方式一样，这里不做区分
 
 限制：react-router版本为6.x
 ```js
@@ -85,7 +87,6 @@ export function App () {
   )
 }
 ```
-
 **2、设置baseroute：**
 ```js
 // my-page.js
@@ -99,9 +100,9 @@ export function MyPage () {
 }
 ```
 
-#### ** vue2 **
+== Vue 2
 
-**1、设置路由：**history路由和hash路由的配置方式一样，这里不做区分
+**1、设置路由：** history路由和hash路由的配置方式一样，这里不做区分
 ```js
 // router.js
 import Vue from 'vue'
@@ -132,9 +133,9 @@ export default routes
 </template>
 ```
 
-#### ** vue3 **
+== Vue 3
 
-**1、设置路由：**history路由和hash路由的配置方式一样，这里不做区分
+**1、设置路由：** history路由和hash路由的配置方式一样，这里不做区分
 ```js
 // router.js
 import MyPage from './my-page.vue'
@@ -160,15 +161,13 @@ export default routes
   <micro-app name='my-app' url='http://localhost:3000/' baseroute='/child'></micro-app>
 </template>
 ```
+:::
 
-<!-- tabs:end -->
+#### 子应用 {#child}
 
-#### 子应用 :id=child
-
-<!-- tabs:start -->
-#### ** react16 **
-
-**设置基础路径：**history路由和hash路由的配置方式一样，这里不做区分
+::: tabs key:baseroute
+== React 16
+**设置基础路径：** history路由和hash路由的配置方式一样，这里不做区分
 ```js
 import { BrowserRouter, Switch, Route } from 'react-router-dom'
 
@@ -181,10 +180,8 @@ export default function App () {
   )
 }
 ```
-
-#### ** react18 **
-
-**设置基础路径：**history路由和hash路由的配置方式一样，这里不做区分
+== React 18
+**设置基础路径：** history路由和hash路由的配置方式一样，这里不做区分
 ```js
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 
@@ -197,14 +194,11 @@ export default function App () {
   )
 }
 ```
+== Vue 2
 
-
-#### ** vue2 **
 **设置基础路径：**
 
-<!-- tabs:start -->
-
-#### **history路由**
+**history路由：**
 ```js
 import Vue from 'vue'
 import VueRouter from 'vue-router'
@@ -216,8 +210,8 @@ const router = new VueRouter({
   // 其它配置...
 })
 ```
+**hash路由：**
 
-#### **hash路由**
 vue2在hash模式下无法通过[base](https://v3.router.vuejs.org/zh/api/#base)设置基础路径，需要通过一个空的路由页面包裹实现，具体方式如下：
 
 1、创建`root-app.vue`文件，内容如下：
@@ -252,16 +246,10 @@ this.$router.push(window.__MICRO_APP_BASE_ROUTE__ + path)
 ```html
 <router-link :to="window.__MICRO_APP_BASE_ROUTE__ + path"></router-link>
 ```
-
-<!-- tabs:end -->
-
-
-#### ** vue3 **
-
+== Vue 3
 **设置基础路径：**
-<!-- tabs:start -->
 
-#### **history路由**
+**history路由：**
 
 ```js
 import { createRouter, createWebHistory } from 'vue-router'
@@ -272,8 +260,7 @@ const router = createRouter({
   // 其它配置...
 })
 ```
-
-#### **hash路由**
+**hash路由：**
 
 ```js
 import { createRouter, createWebHashHistory } from 'vue-router'
@@ -287,13 +274,9 @@ const router = createRouter({
   // 其它配置...
 })
 ```
-<!-- tabs:end -->
+:::
 
-<!-- tabs:end -->
-
-
-
-### 关于native模式的原理解析 :id=principle
+## 关于native模式的原理解析 {#principle}
 主应用和子应用的路由系统既相互独立又同时基于浏览器地址进行渲染。
 
 相互独立：是指主应用和子应用是基于各自前端框架生成的路由系统，自身的路由变化不会直接影响对方，一方跳转到新的地址后，另外一方不会自动响应浏览器变化（除非刷新浏览器或者主动发送`PopStateEvent`事件）。
@@ -302,7 +285,7 @@ const router = createRouter({
 
 **注意：**子应用基于浏览器地址进行渲染，而不是micro-app的url属性
 
-##### 例1:
+### 例1:
 
 浏览器地址为：`http://localhost:3000/page1?id=1#hash`，此时pathname为`/page1`，search为`?id=1`，hash为`#hash`。
 
@@ -322,7 +305,7 @@ const router = createRouter({
 子应用加载完成后会根据浏览器的地址匹配并渲染对应的页面。
 
 
-##### 例2:
+### 例2:
 
 场景：主应用是history路由，子应用也是history路由，我们要跳转主应用的`my-app`页面，`my-app`页面中嵌入了子应用，我们要展现子应用的`page1`页面。
 
@@ -337,7 +320,7 @@ micro-app配置如下：
 ```
 
 
-##### 例3:
+### 例3:
 
 场景：主应用是hash路由，子应用也是hash路由，我们要跳转主应用的`my-app`页面，`my-app`页面中嵌入了子应用，我们要展现子应用的`page1`页面。
 
@@ -350,7 +333,7 @@ micro-app配置如下：
 <micro-app url='http://子应用域名/index.html' baseroute='/my-page'></micro-app>
 ```
 
-##### 例4:
+### 例4:
 
 场景：主应用是history路由，子应用是hash路由，我们要跳转主应用的`my-app`页面，页面中嵌入了子应用，我们要展现子应用的`page1`页面。
 

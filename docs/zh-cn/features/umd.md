@@ -1,15 +1,17 @@
+# umd模式
+
 MicroApp支持两种渲染微前端的模式，默认模式和umd模式。
 
-- **默认模式：**子应用在初次渲染和后续渲染时会顺序执行所有js，以保证多次渲染的一致性。
-- **umd模式：**子应用暴露出`mount`、`unmount`方法，此时只在初次渲染时执行所有js，后续渲染只会执行这两个方法，在多次渲染时具有更好的性能和内存表现。
+- **默认模式：** 子应用在初次渲染和后续渲染时会顺序执行所有js，以保证多次渲染的一致性。
+- **umd模式：** 子应用暴露出`mount`、`unmount`方法，此时只在初次渲染时执行所有js，后续渲染只会执行这两个方法，在多次渲染时具有更好的性能和内存表现。
 
 通常情况下，我们推荐使用umd模式，以获得更好的性能和内存表现，默认模式更适合渲染和卸载不频繁的子应用。
 
 **开启umd方式：**
-<!-- tabs:start -->
 
-#### ** Vue2 **
-```js
+::: code-group
+
+```js [Vue2]
 // main.js
 import Vue from 'vue'
 import router from './router'
@@ -37,8 +39,7 @@ if (!window.__MICRO_APP_ENVIRONMENT__) {
 }
 ```
 
-#### ** Vue3 **
-```js
+```js [Vue3]
 // main.js
 import { createApp } from 'vue'
 import { createRouter, createWebHistory } from 'vue-router'
@@ -76,8 +77,7 @@ if (!window.__MICRO_APP_ENVIRONMENT__) {
 }
 ```
 
-#### ** React **
-```js
+```js [React]
 // index.js
 import React from "react"
 import ReactDOM from "react-dom"
@@ -99,8 +99,7 @@ if (!window.__MICRO_APP_ENVIRONMENT__) {
 }
 ```
 
-#### ** Angular **
-```js
+```js [Angular]
 // main.ts
 import { NgModuleRef  } from '@angular/core';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
@@ -138,4 +137,3 @@ if (!window.__MICRO_APP_ENVIRONMENT__) {
   window.mount();
 }
 ```
-<!-- tabs:end -->

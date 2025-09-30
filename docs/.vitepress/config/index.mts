@@ -10,6 +10,8 @@ import lightbox from "vitepress-plugin-lightbox"
 
 export default defineConfig({
   ...shared,
+  srcExclude: ['**/static/**', '**/media/**', '**/home/**', '**/0.x/**'],
+  ignoreDeadLinks: true,
   markdown: {
     config(md) {
       md.use(tabsMarkdownPlugin)
